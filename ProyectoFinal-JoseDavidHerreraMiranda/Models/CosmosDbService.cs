@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.Cosmos;
+using ProyectoFinal_JoseDavidHerreraMiranda.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace CosmosDBApi.Models
 
     public interface ICosmosDbService
     {
-        Task<IEnumerable<Items>> GetItemsAsync(string query);
-        Task<Items> GetItemAsync(string id);
-        Task AddItemAsync(Items item);
-        Task UpdateItemsAsync(string id, Items item);
-        Task DeleteItemAsync(string id);
+        Task<IEnumerable<Product>> GetProductsAsync(string query);
+        Task<Product> GetProductAsync(string id);
+        Task AddProductAsync(Product item);
+        Task UpdateProductAsync(string id, Product item);
+        Task DeleteProductAsync(string id);
 
     }
 
@@ -26,19 +27,19 @@ namespace CosmosDBApi.Models
             _container = dbClient.GetContainer(databaseName, containerName);
         }
 
-        public async Task AddItemAsync(Items item)
+        public async Task AddProductAsync(Product item)
         {
-            await _container.CreateItemAsync<Items>(item, new PartitionKey(item.Id));
+            await _container.CreateItemAsync<Product>(item, new PartitionKey(item.Id));
         }
-        public async Task DeleteItemAsync(string id)
+        public async Task DeleteProductAsync(string id)
         {
-            await _container.DeleteItemAsync<Items>(id, new PartitionKey(id));
+            await _container.DeleteItemAsync<Product>(id, new PartitionKey(id));
         }
-        public async Task<Items> GetItemAsync(string id)
+        public async Task<Product> GetProductAsync(string id)
         {
             try
             {
-                ItemResponse<Items> response = await _container.ReadItemAsync<Items>(id, new PartitionKey(id));
+                ItemResponse<Product> response = await _container.ReadItemAsync<Product>(id, new PartitionKey(id));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -48,10 +49,10 @@ namespace CosmosDBApi.Models
             }
         }
 
-        public async Task<IEnumerable<Items>> GetItemsAsync(string queryString)
+        public async Task<IEnumerable<Product>> GetProductsAsync(string queryString)
         {
-            var query = _container.GetItemQueryIterator<Items>(new QueryDefinition(queryString));
-            List<Items> results = new List<Items>();
+            var query = _container.GetItemQueryIterator<Product>(new QueryDefinition(queryString));
+            List<Product> results = new List<Product>();
             while (query.HasMoreResults)
             {
                 var response = await query.ReadNextAsync();
@@ -60,9 +61,9 @@ namespace CosmosDBApi.Models
             return results;
         }
 
-        public async Task UpdateItemsAsync(string id, Items item)
+        public async Task UpdateProductAsync(string id, Product item)
         {
-            await _container.UpsertItemAsync<Items>(item, new PartitionKey(id));
+            await _container.UpsertItemAsync<Product>(item, new PartitionKey(id));
         }
     }
 }

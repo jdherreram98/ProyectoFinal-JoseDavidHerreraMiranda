@@ -6,6 +6,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,10 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            // add singleton for cosmos db
+            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            // add swagger v1
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiCosmosDB", Version = "v1" }));
         }
 
         // register db client cosmos db
@@ -52,6 +57,10 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // add swagger
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiCosmosDB v1"));
             }
             else
             {
