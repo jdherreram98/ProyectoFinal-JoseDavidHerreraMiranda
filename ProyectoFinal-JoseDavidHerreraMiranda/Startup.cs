@@ -30,7 +30,7 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda
             // add singleton for cosmos db
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
             // add swagger v1
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiCosmosDB", Version = "v1" }));
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MVC-Simulation", Version = "v1" }));
         }
 
         // register db client cosmos db
