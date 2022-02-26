@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<ProyectoFinal_JoseDavidHerreraMiranda.Models.Simulation>
 
 @{
-    ViewData["Title"] = "List of Simulations";
+    ViewData["Title"] = "Execute Simulation";
 }
 
-<h1>List of Simulations</h1>
+<h1>List of simulations to be executed</h1>
 
-<p>
-    <a asp-action="Create">Add simulation</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -55,21 +52,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Active)
                 </td>
-                @if (!item.Completed)
-                {
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                }else
-                {
-                    <td>
-                        @Html.ActionLink("Report", "ViewReport", new { id = item.Id })
-                    </td>
-                }
-
-
+                <td>
+                    @Html.ActionLink("Execute", "ExecuteSimulation", new { id = item.Id })
+                </td>
             </tr>
         }
     </tbody>

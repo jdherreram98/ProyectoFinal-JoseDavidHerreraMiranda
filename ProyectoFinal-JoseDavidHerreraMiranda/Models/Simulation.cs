@@ -8,17 +8,26 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Models
 {
     public class Simulation
     {
-        [JsonProperty(PropertyName = "id", Required = Required.Always)]
+        [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "description", Required = Required.Always)]
+        [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
-        [JsonProperty(PropertyName = "daysbyweek", Required = Required.Always)]
+        [JsonProperty(PropertyName = "product")]
+        public Product Product { get; set; }
+
+        [JsonProperty(PropertyName = "daysByWeek")]
         public int DaysByWeek { get; set; }
+
+        [JsonProperty(PropertyName = "hoursByDay")]
+        public int HoursByDay { get; set; }
+
+        [JsonProperty(PropertyName = "daysOfSimulation")]
+        public int DaysOfSimulation { get; set; }
 
         [JsonProperty(PropertyName = "completed")]
         public bool Completed { get; set; }

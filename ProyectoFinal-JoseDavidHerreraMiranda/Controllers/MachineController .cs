@@ -17,13 +17,16 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Controllers
             _cosmosDbService = cosmosDbService;
         }
 
+        /// <summary>
+        /// view list
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        [Route("getMachines")]
         public async Task<ActionResult> Index()
         {
             try
             {
-                return View( (await _cosmosDbService.GetMachinesAsync("SELECT * FROM c WHERE c.type = 'Machine' AND c.active = true")).ToList());
+                return View((await _cosmosDbService.GetMachinesAsync("SELECT * FROM c WHERE c.type = 'Machine' AND c.active = true")).ToList());
             }
             catch
             {
@@ -31,14 +34,28 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Controllers
             }
         }
 
+        /// <summary>
+        /// view create 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// create action
+        /// </summary>
+        /// <param name="Machine"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("addMachine")]
-        public async Task CreateAsync([Bind("Name,CostByHour,HoursToBeRepared,State,Active")] Machine Machine)
+        public async Task<ActionResult> CreateAsync([Bind("Name,CostByHour,ProductsByHour,HoursToBeRepared,State,Active")] Machine Machine)
         {
             try
             {
                 Machine.Id = Guid.NewGuid().ToString();
                 await _cosmosDbService.AddMachineAsync(Machine);
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -46,8 +63,12 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Controllers
             }
         }
 
-        [ActionName("viewMachineEdit")]
-        public async Task<ActionResult> EditAsync(string id)
+        /// <summary>
+        /// view edit
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Edit(string id)
         {
             if (id == null)
                 return BadRequest();
@@ -60,9 +81,13 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Controllers
             return View(Machine);
         }
 
+        /// <summary>
+        /// edit action
+        /// </summary>
+        /// <param name="Machine"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("updateMachine")]
-        public async Task<ActionResult> EditAsync([Bind("Id")] Machine Machine)
+        public async Task<ActionResult> EditAsync([Bind("Id,Name,CostByHour,ProductsByHour,HoursToBeRepared,CreatedDate,State,Active")] Machine Machine)
         {
             if (ModelState.IsValid)
             {
@@ -70,11 +95,33 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Controllers
                 return RedirectToAction("Index");
             }
             return View(Machine);
-        }        
+        }
 
+        /// <summary>
+        /// view for delete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Delete(string id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            Machine Machine = await _cosmosDbService.GetMachineAsync(id);
+
+            if (Machine == null)
+                return NotFound();
+
+            return View(Machine);
+        }
+
+        /// <summary>
+        /// delete action
+        /// </summary>
+        /// <param name="Machine"></param>
+        /// <returns></returns>
         [HttpPost]
-        [ActionName("deleteMachine")]
-        public async Task<ActionResult> DeleteConfirmedAsync([Bind("Id")] Machine Machine)
+        public async Task<ActionResult> DeleteAsync([Bind("Id,Name,CostByHour,ProductsByHour,HoursToBeRepared,State,Active")] Machine Machine)
         {
             if (ModelState.IsValid)
             {
@@ -85,8 +132,12 @@ namespace ProyectoFinal_JoseDavidHerreraMiranda.Controllers
             return View(Machine);
         }
 
-        [ActionName("getMachineDetails")]
-        public async Task<ActionResult> DetailsAsync(string id)
+        /// <summary>
+        /// view details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Details(string id)
         {
             return View(await _cosmosDbService.GetMachineAsync(id));
         }

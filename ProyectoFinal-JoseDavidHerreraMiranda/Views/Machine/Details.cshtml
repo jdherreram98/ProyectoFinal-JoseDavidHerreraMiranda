@@ -1,0 +1,66 @@
+﻿@model ProyectoFinal_JoseDavidHerreraMiranda.Models.Machine
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Machine</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            Cost By Hour
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CostByHour)
+        </dd>
+        <dt class = "col-sm-2">
+            Products By Hour
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductsByHour)
+        </dd>
+        <dt class = "col-sm-2">
+            Hours To Be Repared
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoursToBeRepared)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.State)
+        </dd>
+        <dt class = "col-sm-2">
+            Created Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt class = "col-sm-2">
+            Last Modified Date
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastModifiedDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id }) |
+    <a asp-action="Index">Back to List</a>
+</div>
